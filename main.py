@@ -11,6 +11,8 @@ def menu():
         choice2 = input("Choices: ")
     elif int(choice,10) == 2:
         choice2 = 0
+    else:
+        choice2 = -1
     return [choice,choice2]
 def make_graph_by_animal(name,b):
     title = ["Cattle","Chicken","Duck"]
@@ -26,8 +28,10 @@ def make_graph_by_animal(name,b):
 if __name__ == "__main__":
     a,b=menu()
     print(a,b)
-    if a == "1":
-        make_graph_by_animal(const_ani[int(b,10)],b)
+    while a != "3":
+        if a == "1":
+            make_graph_by_animal(const_ani[int(b,10)],b)
+        a,b = menu()
     """
     ex = ex[2:18]
     x = [i for i in ex['รายงานสรุปจำนวนวัวในจังหวัดพิจิตร']]
