@@ -19,15 +19,40 @@ def make_graph_by_animal(name,b):
     ex = pd.read_excel(name)
     ex =ex.sort_values(by='NO.',ascending=False)
     ex = ex[1:4]
-    x = [i for i in ex['District']]
-    y = [i for i in ex['NO.']]
+    x = []
+    for i in ex['District']:
+        x.append(i)
+    y = []
+    for i in ex['NO.']:
+        y.append(i)
     fig,ax =plt.subplots()
     ax.set_title(title[int(b,10)-1])
     ax.bar(x,y)
     plt.show()
+def price_graph(name,b):
+    title = ["Cattle","Chicken","Duck"]
+    price = {"Chicken":3*31,"Duck":2.7*73}
+    ex = pd.read_excel(name)
+    ex =ex.sort_values(by='NO.',ascending=False)
+    ex = ex[1:4]
+    x = []
+    for i in ex['District']:
+        x.append(i)
+    y = []
+    for i in ex['NO.']:
+        y.append(i*price[title[int(b,10)-1]])
+    fig,ax =plt.subplots()
+    ax.set_title(title[int(b,10)-1])
+    ax.bar(x,y)
+    plt.show()    
 if __name__ == "__main__":
     a,b=menu()
     while a != "3":
         if a == "1":
-            make_graph_by_animal(const_ani[int(b,10)],b)
+            print("Graph choice\n1.Quantity\n2.Price\n3.Total")
+            c = input("Choices: ")
+            if c == "1":
+                make_graph_by_animal(const_ani[int(b,10)],b)
+            elif c == "2":
+                price_graph(const_ani[int(b,10)],b)
         a,b = menu()
