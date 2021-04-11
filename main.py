@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
+
 import numpy as np
 import pandas as pd
+import text_tranfromer
 import matplotlib.pyplot as plt
-const_ani = {2:"compro data chicken.xlsx",1:"compro data beef.xlsx",3:"compro data duck.xlsx"}
+const_ani = {2:"compro data chicken.csv",1:"compro data beef.csv",3:"compro data duck.csv"}
 price = {"Cattle":350*94,"Chicken":3*31,"Duck":2.7*73}
 weight_ani = [350,3,2.7]
 def menu():
@@ -20,34 +21,30 @@ def menu():
 #section 1
 def make_graph_by_animal(name,b):
     title = ["Cattle","Chicken","Duck"]
-    ex = pd.read_excel(name)
-    ex =ex.sort_values(by="Quantity",ascending=False)
-    ex = ex[1:4]
+    ex,_ = text_tranfromer.max_mem(name)
     x = []
-    for i in ex['District']:
-        x.append(i)
     y = []
-    for i in ex["Quantity"]:
-        y.append(i)
+    for i in ex:
+        x.append(i[0])
+        y.append(i[1])
     fig,ax =plt.subplots()
     plt.xlabel("District")
     plt.ylabel("Quantity")
     ax.set_title(title[int(b,10)-1]+" Quantity")
     ax.yaxis.grid(True)
     ax.bar(x,y)
+    print(y)
     plt.show()
 def price_graph(name,b):
     title = ["Cattle","Chicken","Duck"]
-    ex = pd.read_excel(name)
-    ex =ex.sort_values(by="Quantity",ascending=False)
-    ex = ex[1:4]
+    ex,_ = text_tranfromer.max_mem(name)
     x = []
-    for i in ex['District']:
-        x.append(i)
     y = []
-    for i in ex["Quantity"]:
-        y.append(i*price[title[int(b,10)-1]])
+    for i in ex:
+        x.append(i[0])
+        y.append(i[1]*price[title[int(b,10)-1]])
     fig,ax =plt.subplots()
+    print(y)
     ax.set_title(title[int(b,10)-1]+" Price")
     plt.xlabel("District")
     plt.ylabel("Price")
@@ -58,15 +55,15 @@ def pie_price_graph():
     title = ["Cattle","Chicken","Duck"]
     value = []
     tot_val = 0
-    cattle_ex = pd.read_excel(const_ani[1])
+    cattle_ex = pd.read_csv(const_ani[1])
     tot_cattle = cattle_ex[cattle_ex['District'] == 'Total'].values[0][1]*price["Cattle"]
     value.append(tot_cattle)
     tot_val += tot_cattle
-    chick_ex = pd.read_excel(const_ani[2])
+    chick_ex = pd.read_csv(const_ani[2])
     tot_chick = chick_ex[chick_ex['District'] == 'Total'].values[0][1]*price["Chicken"]
     value.append(tot_chick)
     tot_val += tot_chick
-    duck_ex = pd.read_excel(const_ani[3])
+    duck_ex = pd.read_csv(const_ani[3])
     tot_duck = duck_ex[duck_ex['District'] == "Total"].values[0][1]*price["Duck"]
     value.append(tot_duck)
     tot_val += tot_duck
@@ -85,13 +82,13 @@ def make_graph_by_provice(dis_name):
         print(dis_name[i])
     choice = int(input("Choices: "),10) - 1
     real_dis = dis_name[choice]
-    cattle_ex = pd.read_excel(const_ani[1])
+    cattle_ex = pd.read_csv(const_ani[1])
     cattle_ex = cattle_ex[cattle_ex["District"] == real_dis]
     Quantity.append((cattle_ex["Quantity"].values[0]*weight_ani[0])/1000)
-    chick_ex = pd.read_excel(const_ani[2])
+    chick_ex = pd.read_csv(const_ani[2])
     chick_ex = chick_ex[chick_ex["District"] == real_dis]
     Quantity.append((chick_ex["Quantity"].values[0]*weight_ani[1])/1000)
-    duck_ex = pd.read_excel(const_ani[3])
+    duck_ex = pd.read_csv(const_ani[3])
     duck_ex = duck_ex[duck_ex["District"] == real_dis]
     Quantity.append((duck_ex["Quantity"].values[0]*weight_ani[2])/1000)
     fig,ax =plt.subplots()
@@ -102,7 +99,7 @@ def make_graph_by_provice(dis_name):
     ax.bar(title,Quantity)
     plt.show()
 if __name__ == "__main__":
-    ex = pd.read_excel(const_ani[1])
+    ex = pd.read_csv(const_ani[1])
     idx = [i for i in ex["District"]] #get district name
     a,b=menu()
     while a  in ['1','2','3','4']:
