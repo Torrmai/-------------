@@ -1,6 +1,3 @@
-
-import numpy as np
-import pandas as pd
 import text_tranfromer
 import matplotlib.pyplot as plt
 const_ani = {2:"compro data chicken.csv",1:"compro data beef.csv",3:"compro data duck.csv"}
@@ -55,16 +52,16 @@ def pie_price_graph():
     title = ["Cattle","Chicken","Duck"]
     value = []
     tot_val = 0
-    cattle_ex = pd.read_csv(const_ani[1])
-    tot_cattle = cattle_ex[cattle_ex['District'] == 'Total'].values[0][1]*price["Cattle"]
+    cattle_ex,tot = text_tranfromer.max_mem(const_ani[1])
+    tot_cattle = tot*price["Cattle"]
     value.append(tot_cattle)
     tot_val += tot_cattle
-    chick_ex = pd.read_csv(const_ani[2])
-    tot_chick = chick_ex[chick_ex['District'] == 'Total'].values[0][1]*price["Chicken"]
+    chick_ex,tot = text_tranfromer.max_mem(const_ani[2])
+    tot_chick = tot*price["Chicken"]
     value.append(tot_chick)
     tot_val += tot_chick
-    duck_ex = pd.read_csv(const_ani[3])
-    tot_duck = duck_ex[duck_ex['District'] == "Total"].values[0][1]*price["Duck"]
+    duck_ex,tot = text_tranfromer.max_mem(const_ani[3])
+    tot_duck = tot*price["Duck"]
     value.append(tot_duck)
     tot_val += tot_duck
     percent = [(i/tot_val)*100 for i in value]
@@ -78,19 +75,16 @@ def make_graph_by_provice(dis_name):
     title = ["Cattle","Chicken","Duck"]
     Quantity = []
     #district choices
-    for i in range(len(dis_name) - 1):
-        print(dis_name[i])
+    for i in dis_name:
+        print(i)
     choice = int(input("Choices: "),10) - 1
     real_dis = dis_name[choice]
-    cattle_ex = pd.read_csv(const_ani[1])
-    cattle_ex = cattle_ex[cattle_ex["District"] == real_dis]
-    Quantity.append((cattle_ex["Quantity"].values[0]*weight_ani[0])/1000)
-    chick_ex = pd.read_csv(const_ani[2])
-    chick_ex = chick_ex[chick_ex["District"] == real_dis]
-    Quantity.append((chick_ex["Quantity"].values[0]*weight_ani[1])/1000)
-    duck_ex = pd.read_csv(const_ani[3])
-    duck_ex = duck_ex[duck_ex["District"] == real_dis]
-    Quantity.append((duck_ex["Quantity"].values[0]*weight_ani[2])/1000)
+    cattle_ex = text_tranfromer.find_district(const_ani[1],real_dis)
+    Quantity.append((cattle_ex*weight_ani[0])/1000)
+    chick_ex = text_tranfromer.find_district(const_ani[2],real_dis)
+    Quantity.append((chick_ex*weight_ani[1])/1000)
+    duck_ex = text_tranfromer.find_district(const_ani[3],real_dis)
+    Quantity.append((duck_ex*weight_ani[2])/1000)
     fig,ax =plt.subplots()
     plt.xlabel("Animal")
     plt.ylabel("Tot. Weight (Tons.)")
@@ -99,8 +93,11 @@ def make_graph_by_provice(dis_name):
     ax.bar(title,Quantity)
     plt.show()
 if __name__ == "__main__":
-    ex = pd.read_csv(const_ani[1])
-    idx = [i for i in ex["District"]] #get district name
+    ex = open(const_ani[1],"r+").readlines()
+    ex = [i.replace("\n","") for i in ex]
+    ex = [i.split(",") for i in ex]
+    ex =  ex[1:len(ex)-1]
+    idx = [ex[i][0] for i in range(len(ex))] #get district name
     a,b=menu()
     while a  in ['1','2','3','4']:
         if a == "1":
