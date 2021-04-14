@@ -1,0 +1,14 @@
+District,Quantity
+Sam Ngam,160165
+Wachirabarami,97424
+Wang Sai Phun,66703
+Mueang Phichit,63470
+Sak Lek,61782
+Dong Charoen,58934
+Tap Khlo,55770
+Bang Mun Nak,53392
+Pho Prathap Chang,51854
+Pho Thale,49947
+Taphan Hin,46831
+Bueng Na Rang,38553
+Total,804825
