@@ -123,8 +123,8 @@ def make_graph_by_provice(dis_name):
 if __name__ == "__main__":
     print("-"*50)
     print("Welcome to our program!")
-    ex = open(data_beef,"r+").readlines()
-    ex = [i.replace("\n","") for i in ex]
+    ex = open(data_beef,"r+").read().splitlines()
+    #ex = [i.replace("\n","") for i in ex]
     ex = [i.split(",") for i in ex]
     ex =  ex[1:len(ex)-1]
     idx = [ex[i][0] for i in range(len(ex))] #get district name
